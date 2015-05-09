@@ -1,0 +1,36 @@
+/*
+ * Globals
+ */
+@font-face {
+	font-family: 'yekan';
+	src: url('../font/yekan.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+}
+@font-face {
+	font-family: 'irsans';
+	src: url('../font/irsans.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+}
+@font-face {
+	font-family: 'irsans';
+	font-weight: bold;
+	src: url('../font/birsans.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+}
+.jumbotron
+{
+	padding: 25px 0;
+}
+.jumbotron h1
+{
+	font-size: 30px;
+}
+.jumbotron h2
+{
+	font-size: 20px;
+}
+.jumbotron h3
+{
+	font-size: 16px;
+}
+.table tbody tr td
+{
+	vertical-align: middle;
+}
