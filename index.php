@@ -1,3 +1,31 @@
+<?php
+session_start();
+
+function get_problems()
+{
+	$problems = $_SESSION["problems"];
+	
+	if(isset($problems) AND !empty ($problems))
+	{
+		foreach ($problems as $problem_id => $problem_title)
+		{
+			echo $problem_id . ':' . $problem_title . PHP_EOL;
+		}
+	}
+}
+
+function get_usernames()
+{
+	$user_names = $_SESSION["user_names"];
+	if(isset($user_names) AND !empty ($user_names))
+	{
+		foreach ($user_names as $username => $val)
+		{
+			echo $username . PHP_EOL;
+		}
+	}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,55 +53,36 @@
   </head>
 
   <body role="document">
-
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1 class="text-center">ACM ICPC Programming Contest</h1>
-		<h2 class="text-center">Vali-e-asr University Of Rafsanjan</h2>
-		<h3 class="text-center">Fri Dec 19 13:47:09 IRST 2014</h3>
-      </div>
-<div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th class="text-center">#</th>
-				<th class="text-center">Name</th>
-                <th class="text-center">A</th>
-                <th class="text-center">B</th>
-                <th class="text-center">D</th>
-				<th class="text-center">E</th>
-				<th class="text-center">F</th>
-				<th class="text-center">G</th>
-				<th class="text-center">H</th>
-				<th class="text-center">I</th>
-				<th class="text-center">J</th>
-				<th class="text-center">K</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-				<td class="text-center">1</td>
-                <td>Anisi</td>
-                <td class="success text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">2<span class="clearfix">5</span></td>
-				<td class="danger text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">2<span class="clearfix">5</span></td>
-				<td class="text-center">0<span class="clearfix">-</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-     
-      </div>
-		<p> Powered By <a href="http://mojtabaanisi.com/">Mojtaba Anisi</a> <span class="pull-right">Lastest refresh: <strong>1 sec</strong> ago</span></p>
-</div>
+      
+	<div class="container-fluid">
+		<form action = "create.php" method = "post">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="page-header">
+					  <h1>CodeShare extractor <small>Create new contest</small></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+				  <div class="form-group">
+					<label for="exampleInputEmail1">User names</label>
+					<p class="help-block">Enter all user names that you are going to track there results.<br>Enter just one user name per line.</p>
+					<textarea class="form-control" id="usernames" name="usernames" rows="15" required><?php get_usernames(); ?></textarea>
+				  </div>
+				</div>
+				<div class="col-md-6">
+				  <div class="form-group">
+					<label for="exampleInputEmail1">Problems</label>
+					<p class="help-block">Enter all problems that you are going to track them.<br>Enter just one problem per line and follow this pattern: problem id:custom title</p>
+					<textarea class="form-control" id="problems" name="problems" rows="15" placeholder="Example: 1100:A" required><?php get_problems(); ?></textarea>
+				  </div>
+				  <button type="submit" class="btn btn-info">Let's GO!</button>
+				</div>
+			</div>
+		</form>
+		<p> Powered By <a href="http://mojtabaanisi.com/">Mojtaba Anisi</a><a href="ranklist.php" class = "pull-right">Rank List</a></p>
+	</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
