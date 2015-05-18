@@ -1,28 +1,53 @@
 <?php
+date_default_timezone_set('UTC');
 session_start();
 
 function get_problems()
 {
-	$problems = $_SESSION["problems"];
+	$problems = @$_SESSION["problems"];
+	$problems_num = count($problems);
+	$i = 0;
 	
 	if(isset($problems) AND !empty ($problems))
 	{
 		foreach ($problems as $problem_id => $problem_title)
 		{
-			echo $problem_id . ':' . $problem_title . PHP_EOL;
+			echo $problem_id . ':' . $problem_title;
+			if ($i < $problems_num-1)
+			{
+				echo PHP_EOL;
+			}
+			$i++;
 		}
 	}
 }
 
 function get_usernames()
 {
-	$user_names = $_SESSION["user_names"];
+	$user_names = @$_SESSION["user_names"];
+	$user_names_num = count($user_names);
+	$i = 0;
+	
 	if(isset($user_names) AND !empty ($user_names))
 	{
 		foreach ($user_names as $username => $val)
 		{
-			echo $username . PHP_EOL;
+			echo $username;
+			if ($i < $user_names_num-1)
+			{
+				echo PHP_EOL;
+			}
+			$i++;
 		}
+	}
+}
+
+function get_starttime()
+{
+	$starttime = @$_SESSION["starttime"];
+	if(isset($starttime) AND !empty ($starttime))
+	{
+			echo date('H:i:s', $starttime);
 	}
 }
 ?>
@@ -70,6 +95,9 @@ function get_usernames()
 					<p class="help-block">Enter all user names that you are going to track there results.<br>Enter just one user name per line.</p>
 					<textarea class="form-control" id="usernames" name="usernames" rows="15" required><?php get_usernames(); ?></textarea>
 				  </div>
+				  <div class="form-group">
+					<input class="form-control" id="starttime" name="starttime" value ="<?php get_starttime(); ?>" placeholder="Start Time. Example: 22:12:00" required>
+				  </div>
 				</div>
 				<div class="col-md-6">
 				  <div class="form-group">
@@ -78,6 +106,7 @@ function get_usernames()
 					<textarea class="form-control" id="problems" name="problems" rows="15" placeholder="Example: 1100:A" required><?php get_problems(); ?></textarea>
 				  </div>
 				  <button type="submit" class="btn btn-info">Let's GO!</button>
+				  <a class="btn btn-danger" href="create.php?destroy=1">Destroy All Data</a>
 				</div>
 			</div>
 		</form>

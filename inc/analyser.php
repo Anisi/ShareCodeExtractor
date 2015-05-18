@@ -1,12 +1,17 @@
 <?php
+date_default_timezone_set('UTC');
 include_once('simple_html_dom.php');
 
-function analyser($url, $target_problems, $target_user_names = NULL)
+//analyser ('../page.htm', array ("soroush" => 0, "homa" => 1));
+
+function analyser($url, $target_user_names = array())
 {
 	$ranking_list = file_get_html($url);
 	
 	$result = array();
 	$i = 1;
+	$temp_try = array();
+	
 	foreach($ranking_list->find('tr') as $element)
 	{
 		// just process odd nodes
@@ -15,8 +20,18 @@ function analyser($url, $target_problems, $target_user_names = NULL)
 			// getting username from current element (table row)
 			// tr->td->center->a->{{value}}
 			$user_name = strtolower(trim($element->children(1)->children(0)->children(0)-> innertext));
-			if(array_key_exists($user_name, $target_user_names))
+			if( (array_key_exists($user_name, $target_user_names) AND $target_user_names[$user_name] === 1) OR empty($target_user_names) )
 			{
+				// counting tries
+				if ( isset ($temp_try[$user_name]) )
+				{
+					$temp_try[$user_name]++;
+				}
+				else
+				{
+					$temp_try[$user_name] = 1;
+				}
+				
 				// replace latest info if multiple info found else set initial info
 				if(!isset($result[$user_name]) OR $result[$user_name]['result'] !== TRUE)
 				{
@@ -45,7 +60,6 @@ function analyser($url, $target_problems, $target_user_names = NULL)
 						{
 							$result[$user_name]['result'] = $user_result;
 							$result[$user_name]['time'] = $user_submit_time;
-							$result[$user_name]['try']++;
 						}
 					}
 					// set initial user info
@@ -59,5 +73,12 @@ function analyser($url, $target_problems, $target_user_names = NULL)
 		}
 		$i++;
 	}
+	foreach ($result as $username => $user_result)
+	{
+		$result[$username]["try"] = $temp_try[$username];
+	}
+	
+	//var_dump ($result);
+	return ($result);
 }
 ?>

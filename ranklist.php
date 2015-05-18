@@ -38,13 +38,12 @@
           <table class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th class="text-center">#</th>
-				<th class="text-center">Name</th>
+                <th class="text-center anim:position">#</th>
+				<th class="text-center anim:id">Name</th>
 				<?php
 				session_start();
 				$user_names = $_SESSION["user_names"];
 				$problems = $_SESSION["problems"];
-				$problems_num = count ($problems);
 				
 				foreach ($problems as $problem_id => $problem_title):
 				?>
@@ -61,15 +60,15 @@
 			$i = 1;
 			foreach ($user_names as $user_name => $val):
 			?>
-              <tr>
+              <tr data-username = "<?php echo $user_name; ?>" data-score = "0">
 				<td class="text-center"><?php echo $i; ?></td>
                 <td><?php echo $user_name; ?></td>
 				<?php	
-				for ($j = 0; $j < $problems_num; $j++):
+				foreach ($problems as $problem_id => $problem_title):
 				?>
-                <td class="text-center">-<span class="clearfix">-</span></td>
+                <td class="text-center" data-problem = "<?php echo $problem_id; ?>"><span class="try">-</span><span class="time clearfix">-</span></td>
 				<?php
-				endfor;
+				endforeach;
 				?>
               </tr>
 			<?php
@@ -91,9 +90,12 @@
 	<script src="js/moment.min.js"></script>
 	<script src="js/moment-jalaali.js"></script>
 	<script src="js/ajaxloading.js"></script>
+	<script src="js/animator.js"></script>
+	<script src="js/rankingTableUpdate.js"></script>
 	<script>
-		var datetime = null,
-        date = null;
+		var starttime = <?php echo $_SESSION["starttime"]; ?>;
+		var datetime = null;
+        var date = null;
 
 		var update = function () {
 			date = moment(new Date())
