@@ -21,7 +21,7 @@ function sync()
 						$("tr[data-username='" + key + "']").find("td[data-problem='" + problem_id + "']").addClass("success");
 					}
 				});
-		});
+			});
 		}
 		else
 		{
