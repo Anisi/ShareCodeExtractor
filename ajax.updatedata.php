@@ -1,27 +1,25 @@
 <?php
-	set_time_limit ( 15 );
-	session_start();
-	include_once('inc/analyser.php');
-	
-	$user_names = $_SESSION["user_names"];
-	$problems = $_SESSION["problems"];
-	
-	foreach ($problems as $problem_id => $problem_title)
-	{
-		$problem_url = "http://sharecode.io/runs/problemset/problem/" . $problem_id;
-		$results [$problem_id] = analyser ($problem_url, $user_names);
-	}
-	
-	foreach ($results as $problem_results)
-	{
-		foreach ($problem_results as $username => $result)
-		{
-			if ($result['result'] === TRUE)
-			{
-				$_SESSION[$username] = 0;
-			}
-		}
-	}
-	$results ['error'] = false;
-	echo json_encode($results);
+error_reporting(0);
+//set_time_limit(30);
+session_start();
+include_once('inc/analyser.php');
+$problems = $_SESSION["problems"];
+
+// geeting results for each problem
+foreach ($problems as $problem_id => $problem_title) {
+    $analyser = new analyser;
+    $results [$problem_id] = $analyser->get_result($problem_id);
+    unset($analyser);
+}
+
+// outmode solved problems for each user
+foreach ($results as $problem_id => $problem_results) {
+    foreach ($problem_results as $user_name_hashed => $result) {
+        if ($result['result'] === TRUE) {
+            $_SESSION['user_names'][$user_name_hashed][$problem_id] = 0;
+        }
+    }
+}
+$results ['error'] = false;
+echo json_encode($results);
 ?>

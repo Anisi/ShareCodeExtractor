@@ -5,6 +5,7 @@ function sync()
 	$.getJSON( "ajax.updatedata.php", function( data ) {
 		if (data.error == false)
 		{
+                    console.log(data);
 			timer = 0;
 			$.each( data, function( key, val ) {
 				var problem_id = key;
@@ -21,7 +22,7 @@ function sync()
 						$("tr[data-username='" + key + "']").find("td[data-problem='" + problem_id + "']").addClass("success");
 					}
 				});
-		});
+			});
 		}
 		else
 		{
@@ -29,7 +30,7 @@ function sync()
 		}
 	});
 }
-setInterval(sync, 15000);
+setInterval(sync, 60000);
 
 setInterval(function(){
 	timer++;
